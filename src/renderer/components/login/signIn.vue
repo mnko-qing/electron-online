@@ -44,7 +44,8 @@ export default {
         return
       }
       this.errorTip = ''
-      ipc.send('add')
+      ipc.send('resize')
+      this.$router.push({ name: "landing-page" })
     }
   }
 }

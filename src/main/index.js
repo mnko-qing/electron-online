@@ -1,18 +1,4 @@
-import { app, BrowserWindow } from 'electron'
-const ipc = require('electron').ipcMain
-let renderWindow
-ipc.on('add', () => {
-  renderWindow = new BrowserWindow({
-    width: 1200,
-    height: 800,
-    parent: mainWindow, 
-  })
-  renderWindow.loadURL(winURL)
-  renderWindow.on('closed', () => {
-    renderWindow = null
-  })
-
-})
+import { app,ipcMain, BrowserWindow } from 'electron'
 
 /**
  * Set `__static` path to static files in production
@@ -34,14 +20,15 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     width: 450,
     height: 375,
+    title: "在线协作",
     // frame: false,
-    title:"在线协作",
-    resizable:false,
+    // resizable:false,
+    // transparent: true,
     useContentSize: true,
+    // fullscreenable:false
   })
 
   mainWindow.loadURL(winURL)
-
   mainWindow.on('closed', () => {
     mainWindow = null
   })
@@ -60,6 +47,12 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+ipcMain.on('resize', () => {
+  mainWindow.setSize(1200, 800)
+  mainWindow.center()
+})
+
 
 /**
  * Auto Updater

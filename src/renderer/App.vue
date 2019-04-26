@@ -12,8 +12,12 @@
 
 <style>
   @import "./common/less/reset.css";
+  body{
+    background-color: transparent !important; 
+  }
   #app{
     width: 100%;
     height: 100%;
+    -webkit-app-region: drag;
   }
 </style>

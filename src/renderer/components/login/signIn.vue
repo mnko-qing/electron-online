@@ -1,18 +1,22 @@
 <template>
   <div class="sign-in">
-    <header>在线协作</header>
+    <header>
+      <Icon type="ios-close" size="36" @click="close" />
+      <span>在线协作</span>
+    </header>
     <div class="sign-wrapper">
-      <div>
-        <Icon type="ios-contact-outline user" />
-      </div>
-      <div>
+      <Icon type="ios-contact-outline user" size="100"/>
+      <Icon type="ios-contacts-outline switch-user" size="36" title="切换账号" />
+      <div class="form">
         <Input clearable v-model="username" placeholder="用户名"/>
+        <span>注册账号</span>
         <Input clearable v-model="password" type="password" placeholder="密码"/>
-        <div v-if="errorTip.length" style="color:red">
+        <span>忘记密码</span>
+        <p v-if="errorTip.length" style="color:red">
           <Icon type="ios-alert-outline" size="16"/>{{errorTip}}
-        </div>
+        </p>
         <Checkbox v-model="remember">记住密码</Checkbox>
-        <Checkbox v-model="autoLogon" class="float-right">自动登陆</Checkbox>
+        <Checkbox v-model="autoSign">自动登录</Checkbox>
         <Button type="primary" class="submit" @click="submit">登录</Button>
       </div>
     </div>
@@ -20,21 +24,23 @@
 </template>
 
 <script>
-
+import { ipcRenderer as ipc,remote } from 'electron'
 export default {
   name: 'signIn',
   data (){
     return {
       username:'',
       password:'',
-      autoLogon:'',
+      autoSign:'',
       remember:'',
       errorTip:'',
     }
   },
   methods: {
+    close() {
+      ipc.send('close')
+    },
     submit() {
-      const ipc = require('electron').ipcRenderer
       if(!this.username.length){
         this.errorTip = '请输入用户名!'
         return
@@ -56,38 +62,70 @@ export default {
   .sign-in{
     width: 100%;
     height: 100%;
+    border-radius: 6px;
+    overflow: hidden;
+    background-color: @sign-body-background;
     header{
-      background: @theme-background;
+      background: @sign-header-background;
       text-align: center;
-      line-height: 4.5;
       font-size: 36px;
-      color: #464c5b;
+      line-height: 4.5;
+      color: @font-general;
       height: 45%;
+      position: relative;
+      i {
+        position: absolute;
+        top: 0;
+        right: 0;
+        color: @icon-blur-color;
+        -webkit-app-region: no-drag;
+        &:hover {
+          color: @icon-foucs-color;
+        }
+      }
     }
     .sign-wrapper{
       height: 55%;
-      &>div{
-        float: left;
-        height: 100%;
+      position: relative;
+      -webkit-user-select: none;
+      -webkit-app-region: no-drag;
+      .form {
+        position: absolute;
+        left: 140px;
         padding-top: 20px;
+        & > div,button {
+          width: 185px;
+        }
+        label:hover {
+          color: @sign-header-background;
+        }
+        span {
+          font-size: 14px;
+          color: @sign-header-background;
+          cursor: pointer;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
       }
       .user{
-        margin:0 10px 0 50px;
-        font-size: 80px;
+        position: absolute;
+        top: 20px;
+        left: 30px;
       }
-      .ivu-input-wrapper{
-        display: block;
+      .switch-user {
+        position: absolute;
+        bottom: 5px;
+        left: 10px;
+        cursor: pointer;
       }
       .ivu-checkbox-wrapper{
-        margin-top: 10px;
+        margin: 10px 30px 10px 0;
         font-size: 14px;
       }
-      .float-right{
-        float: right;
-      }
       .submit{
-        margin-top: 10px;
-        width: 100%;
+        padding-left: 45px;
+        letter-spacing: 30px;
       }
     }
   }

@@ -1,14 +1,22 @@
-import { app,ipcMain, BrowserWindow } from 'electron'
-
+import { app,ipcMain,Menu,Tray,BrowserWindow } from 'electron'
+import path from 'path'
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
 if (process.env.NODE_ENV !== 'development') {
-  global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
+  global.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
-let mainWindow
+let mainWindow, menu, tray = null;
+
+const windowOptions = {
+  loginWidth: 450,
+  loginHeight: 375,
+
+  mainWidth: 1200,
+  mainHeight: 800,
+}
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9060`
   : `file://${__dirname}/index.html`
@@ -18,20 +26,49 @@ function createWindow () {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    width: 450,
-    height: 375,
-    title: "在线协作",
-    // frame: false,
-    // resizable:false,
-    // transparent: true,
-    useContentSize: true,
-    // fullscreenable:false
+    width: windowOptions.loginWidth,
+    height: windowOptions.loginHeight,
+    frame: false,
+    title:'在线协作',
+    resizable: false, 
+    maximizable:false,
+    transparent: true,
   })
-
+  mainWindow.webContents.closeDevTools()
   mainWindow.loadURL(winURL)
-  mainWindow.on('closed', () => {
-    mainWindow = null
-  })
+
+  mainWindow.on('close', (event) => { closeMainWindow(event) })
+  mainWindow.on('closed', () => { mainWindow = null })
+
+  createTray()
+}
+
+function createTray() {
+  tray = new Tray('build/icons/icon.ico')
+  const contextMenu = Menu.buildFromTemplate([
+    { label: '打开', click() { openMainWindow() }},
+    { type: 'separator' },
+    {
+      label: '退出', click() {
+        tray.destroy()
+        mainWindow.destroy()
+      }
+    }
+  ])
+  tray.setToolTip(mainWindow.getTitle())
+  tray.setContextMenu(contextMenu)
+  tray.on('double-click', () => { openMainWindow() })
+}
+
+function openMainWindow() {
+  if (!mainWindow.isVisible()) {
+    mainWindow.show()
+  }
+}
+
+function closeMainWindow(event) {
+  mainWindow.hide(); 
+  event.preventDefault();
 }
 
 app.on('ready', createWindow)
@@ -49,9 +86,11 @@ app.on('activate', () => {
 })
 
 ipcMain.on('resize', () => {
-  mainWindow.setSize(1200, 800)
+  mainWindow.setSize(windowOptions.mainWidth, windowOptions.mainHeight)
   mainWindow.center()
 })
+
+ipcMain.on('close', (event) => { closeMainWindow(event) })
 
 
 /**

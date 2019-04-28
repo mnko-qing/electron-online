@@ -24,17 +24,22 @@
 </template>
 
 <script>
+import path from 'path'
 import { ipcRenderer as ipc,remote } from 'electron'
+
 export default {
   name: 'signIn',
   data (){
     return {
       username:'',
       password:'',
-      autoSign:'',
-      remember:'',
+      autoSign:false,
+      remember:false,
       errorTip:'',
     }
+  },
+  created() {
+    this.getCookie()
   },
   methods: {
     close() {
@@ -51,8 +56,47 @@ export default {
       }
       this.errorTip = ''
       ipc.send('resize')
+      this.setCookie()
       this.$router.push({ name: "landing-page" })
-    }
+    },
+    setCookie() {
+      const userInfo = {
+        username:this.username,
+        password:this.password,
+        autoSign:this.autoSign,
+        remember:this.remember,
+        id:'878',
+        name:'规划发起人',
+      }
+
+      /* remote.session.defaultSession.cookies.remove(window.location.href,'userInfo', error => {
+        if (error) console.error(error)
+      }) */
+
+      remote.session.defaultSession.cookies.set({
+        url:window.location.href,
+        name:'userInfo',
+        value:JSON.stringify(userInfo),
+        expirationDate:Math.round(new Date().getTime() / 1000) + 30 * 24 * 60 * 60
+      }, error => {
+        if (error) console.error(error)
+      })
+      this.getCookie()
+    },
+    getCookie() {
+      remote.session.defaultSession.cookies.get({}, (error, cookies) =>{
+        console.log(error, cookies)
+        if (cookies.length) {
+          const cookie = JSON.parse(cookies[0].value)
+          console.log('cookie123',cookie)
+          if (cookie.remember) {
+            this.username = cookie.username
+            this.password = cookie.password
+            this.remember = cookie.remember
+          }
+        }
+      })
+    },
   }
 }
 </script>
@@ -66,7 +110,8 @@ export default {
     overflow: hidden;
     background-color: @sign-body-background;
     header{
-      background: @sign-header-background;
+      // background: @sign-header-background;
+      background: linear-gradient(to top right,#2D8CF0, rgba(108, 100, 214,0.8), rgb(28, 124, 235)); 
       text-align: center;
       font-size: 36px;
       line-height: 4.5;

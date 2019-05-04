@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import path from 'path'
 import { ipcRenderer as ipc,remote } from 'electron'
 
 export default {
@@ -57,7 +56,7 @@ export default {
       this.errorTip = ''
       ipc.send('resize')
       this.setCookie()
-      this.$router.push({ name: "landing-page" })
+      this.$router.push({ name: "window" })
     },
     setCookie() {
       const userInfo = {

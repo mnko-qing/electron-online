@@ -21,18 +21,26 @@ const windowOptions = {
   loginWidth: 450,
   loginHeight: 375,
 
-  mainWidth: 1200,
-  mainHeight: 800,
+  mainWidth: 1000,
+  mainHeight: 700,
 }
 
-let window = {
-  width: windowOptions.loginWidth,
-  height:windowOptions.loginHeight,
+const loginWindowConfig = {
+  width: 450,
+  height: 375,
   frame: false,
-  title:'在线协作',
   resizable: false, 
   maximizable:false,
-  // transparent: true,
+  transparent: true,
+}
+
+const mainWindowConfig = {
+  width:1000,
+  height:700,
+  frame: false,
+  resizable:true,
+  maximizable:true,
+  minimizable:true,
 }
 
 let winURL = process.env.NODE_ENV === 'development'
@@ -43,8 +51,8 @@ function createWindow () {
   /**
    * Initial window options
    */
-  getSession().then( () => {
-
+  getSession().then( (res) => {
+    const window = res ? mainWindowConfig : loginWindowConfig
     mainWindow = new BrowserWindow(window)
     mainWindow.webContents.closeDevTools()
     mainWindow.loadURL(winURL)
@@ -58,17 +66,17 @@ function createWindow () {
 
 function getSession() {
   return new Promise((resolve, reject) => {
+    let isAutoSign = false
     session.defaultSession.cookies.get({}, (error, cookies) => {
       // console.log(error, cookies)
       if (cookies.length) {
         const cookie = JSON.parse(cookies[0].value)
         if (cookie.autoSign) {
-          window.width = windowOptions.mainWidth
-          window.height = windowOptions.mainHeight
-          winURL += '/#/landing'
+          winURL += '/#/window'
+          isAutoSign = true
         }
       }
-      resolve()
+      resolve(isAutoSign)
     })
   })
 }

@@ -44,7 +44,6 @@ function createWindow () {
    * Initial window options
    */
   getSession().then( () => {
-
     mainWindow = new BrowserWindow(window)
     mainWindow.webContents.closeDevTools()
     mainWindow.loadURL(winURL)

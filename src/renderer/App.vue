@@ -20,4 +20,7 @@
     height: 100%;
     -webkit-app-region: drag;
   }
+  ::-webkit-scrollbar {
+    width: 3px;
+  }
 </style>

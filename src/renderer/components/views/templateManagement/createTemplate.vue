@@ -4,10 +4,7 @@
 
     <div class="">
       <label>模板分类：</label>
-      <Select 
-        filterable
-        style="width:auto"
-        v-model="templateConfig.classify">
+      <Select filterable v-model="templateConfig.classify">
         <Option 
           v-for="item in cityList" 
           :value="item.value" 
@@ -29,7 +26,35 @@ export default {
   data (){
     return {
       loading:true,
-      templateConfig: {
+      templateMetaConfig:[
+        {
+          label:'模板分类',
+          show:true,
+          options:[],
+        },{
+          label:'关联编码规则',
+          show:true,
+          options:[],
+        },{
+          label:'模板类型',
+          show:true,
+          options:[],
+        },{
+          label:'模板名称',
+          show:true,
+          options:[],
+        },{
+          label:'模板编号',
+          show:true,
+          options:[],
+        },{
+          label:'是否获取经纬度',
+          show:true,
+          options:[],
+        }
+        
+      ],
+      /* templateConfig: {
         classify: "",
         relCodeRule: "",
         isShowGis:false,
@@ -37,7 +62,7 @@ export default {
         sysTemp: "",
         name: "",
         code: ""
-      },
+      }, */
     }
   },
   created () {

@@ -19,15 +19,8 @@
     <div class="main">
       <SideBarMenu @switchPage="switchPage"></SideBarMenu>
       <div class="pages">
-        <Breadcrumb>
-          <BreadcrumbItem 
-            v-for="(item,index) in breadcrumb"
-            :key="index" 
-            :to="item.router">
-            {{item.label}}
-          </BreadcrumbItem>
-        </Breadcrumb>
-        <router-view></router-view>
+        <h3>{{pageName}}</h3>
+        <router-view />
       </div>
     </div>
   </div>
@@ -40,27 +33,42 @@ export default {
   name: 'mainWindow',
   data (){
     return {
+      window:null,
       isMaximize:false,
-      breadcrumb:[],
+      pageName:'',
     }
+  },
+  created() {
+    this.window = remote.getCurrentWindow()
+
+    // 解决双击标题栏窗口最大化和还原时图标未跟随更改问题
+    // 想过使用window.isMaximized()事件
+    // 但是这个事件只有在窗口重载时才会响应 不知道是不是无边框窗口的问题
+    // 还有一种方案是自己实现拖拽 和双击事件 但只是这一小个功能没有必要搞太复杂
+
+    this.window.on('maximize',() => {
+      this.isMaximize = true
+    })
+
+    this.window.on('unmaximize',() => {
+      this.isMaximize = false
+    })
   },
   methods: {
     switchSkin() {
       // 后期整理在开发
     },
     minimize() {
-      remote.getCurrentWindow().minimize()
+      this.window.minimize()
     },
     maximize() {
-      const mainWindow = remote.getCurrentWindow()
-      this.isMaximize ? mainWindow.unmaximize() : mainWindow.maximize()
-      this.isMaximize = !this.isMaximize
+      this.isMaximize ? this.window.unmaximize() : this.window.maximize()
     },
     close() {
-      remote.getCurrentWindow().destroy()
+      this.window.destroy()
     },
     switchPage(name) {
-      this.breadcrumb[0] = name
+      this.pageName = name.label
       this.$router.push({name:name.name})
     },
   },
@@ -80,8 +88,8 @@ export default {
       width: 100%;
       height: 35px;
       line-height: 35px;
-      background-color: @sign-header-background;
       color: white;
+      background-color: @sign-header-background;
       span {
         font-size: 14px;
         line-height: 35px;
@@ -138,11 +146,10 @@ export default {
         flex: 1;
         margin: 0 20px;
         overflow: hidden;
-        .ivu-breadcrumb {
-          margin: 0;
+        h3 {
+          font-size: 15px;
           height: 40px;
           line-height: 40px;
-          font-size: 15px;
           border-bottom: 1px solid #dddde1;
         }
         &>div {

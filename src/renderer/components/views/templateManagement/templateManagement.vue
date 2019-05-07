@@ -1,11 +1,7 @@
 <template>
   <div class="templateManagement">
     <div v-if="parentShow">
-      <Input 
-        search
-        v-model="templateName"
-        placeholder="搜索模板名称" 
-        style="width: auto" />
+      <Input search v-model="templateName" placeholder="搜索模板名称"/>
 
       <Button 
         type="primary" 
@@ -13,6 +9,8 @@
         @click="create">
         创建模板
       </Button>
+
+      <header @dblclick="doubleClick">doubleClick</header>
       
       <div class="tableArea">
         <Table 
@@ -56,6 +54,9 @@ export default {
       this.parentShow = false
       this.$router.push({name:'createTemplate'})
     },
+    doubleClick() {
+      console.log('????')
+    }
   },
   components:{
 

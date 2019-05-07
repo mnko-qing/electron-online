@@ -130,7 +130,6 @@ ipcMain.on('resize', () => {
 
 ipcMain.on('close', (event) => { closeMainWindow(event) })
 
-
 /**
  * Auto Updater
  *

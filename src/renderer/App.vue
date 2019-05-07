@@ -1,17 +1,12 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <router-view />
   </div>
 </template>
 
-<script>
-  export default {
-    name: 'disbook'
-  }
-</script>
-
 <style>
-  @import "./common/less/reset.css";
+  @import "./common/less/reset.less";
+  @import "./common/less/ivew-custom.less";
   body{
     background-color: transparent !important; 
   }

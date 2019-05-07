@@ -79,11 +79,11 @@ export default {
 <style lang='less' scoped>
   @import "../../common/less/color.less";
   .mainWindow {
-    background-color: white;
-    border:1px solid @sign-header-background;
     width: 100%;
     height: 100%;
     box-sizing: border-box;
+    background-color: white;
+    border:1px solid @sign-header-background;
     header {
       width: 100%;
       height: 35px;

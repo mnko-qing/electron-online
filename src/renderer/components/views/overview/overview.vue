@@ -14,20 +14,40 @@ export default {
   data (){
     return {
       orderStatisticsOptions:{
-        chart:{type: 'area'},
-        title:{text: '工单统计'},
-        xAxis:{categories:['day','week','mounth']},
-        yAxis:{title:'创建工单数'},
-        series:[
-          {
-            name:'流程1',
-            data:[1, 0, 4],
+        chart:{
+          type: 'column',
+          margin: 75,
+          options3d: {
+            enabled: true,
+            alpha: 20,
+            beta: 0,
+            depth: 100,
+            viewDistance: 100,
           },
-          {
-            name:'流程2',
-            data:[2, 2, 2],
+        },
+        title:{text: '工单数量统计'},
+        plotOptions: {
+          column: {
+            depth: 35
           }
-        ]
+        },
+        xAxis:{categories:[
+          '集中规划',
+          '集中分析',
+          '集中优化',
+          '集中维护',
+          '高价值分析',
+          '其他'
+        ]},
+        yAxis:{
+          title:{
+            text:'创建工单数'
+          }
+        },
+        series:[{
+          name:'工单数',
+          data:[2, 3, 5, 4, 6, 3],
+        }]
       },
     }
   },

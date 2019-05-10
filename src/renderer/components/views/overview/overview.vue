@@ -151,7 +151,40 @@ export default {
           create_time:321,
           create_time1:442,
           time:'xxxx-xx-xx',
-        }
+        },
+        {
+          process:'测试',
+          userName:'admin',
+          create:32,
+          need:231,
+          create_time:321,
+          create_time1:442,
+          time:'xxxx-xx-xx',
+        },{
+          process:'测试',
+          userName:'admin',
+          create:32,
+          need:231,
+          create_time:321,
+          create_time1:442,
+          time:'xxxx-xx-xx',
+        },{
+          process:'测试',
+          userName:'admin',
+          create:32,
+          need:231,
+          create_time:321,
+          create_time1:442,
+          time:'xxxx-xx-xx',
+        },{
+          process:'测试',
+          userName:'admin',
+          create:32,
+          need:231,
+          create_time:321,
+          create_time1:442,
+          time:'xxxx-xx-xx',
+        },
       ]
     }
   },
@@ -175,10 +208,4 @@ export default {
 
 <style lang='less' scoped>
   @import "../../../common/less/color.less";
-  .ivu-table-wrapper {
-    margin-top: 20px;
-  }
-  .hide {
-    display: none;
-  }
 </style>

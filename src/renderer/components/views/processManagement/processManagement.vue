@@ -1,6 +1,36 @@
 <template>
   <div class="processManagement">
-    流程管理
+    <Input search v-model="processName" placeholder="搜索流程名称"/>
+
+    <Button 
+      type="primary" 
+      class="create" 
+      @click="create">
+      创建流程
+    </Button>
+    
+    <Table 
+      stripe 
+      size="small" 
+      highlight-row
+      :columns="columns" 
+      :data="tableData"
+      @on-row-click="rowClick">
+
+      <template slot-scope="{ row, index }" slot="operate" v-if="row.operate">
+        <Icon 
+          size="22" 
+          title="删除"
+          type="ios-trash-outline" 
+          @click="deletePrecess(index,$event)"/>
+
+        <Icon 
+          size="22" 
+          title="编辑"
+          type="ios-create-outline"
+          @click="editPrecess(index,$event)" />
+      </template>
+    </Table>
   </div>
 </template>
 
@@ -9,19 +39,94 @@ export default {
   name: 'processManagement',
   data (){
     return {
-      
+      processName:'',
+      prveIndex:null,
+      columns: [
+        {
+          title:'流程名称',
+          key: 'name',
+          align:'center'
+        },
+        {
+          title:' ',
+          key:'operate',
+          width:100,
+          slot: 'operate',
+        },
+        {
+          title:'流程描述',
+          key: 'des',
+          align:'center'
+        },
+        {
+          title:'流程标识',
+          key: 'mark',
+          align:'center'
+        },
+      ],
+      tableData: [
+        {
+          name:'测试流程001',
+          des:'就是一个简单的测试流程',
+          mark:'test_process_001',
+          operate:false
+        },
+        {
+          name:'测试流程002',
+          des:'就是一个简单的测试流程',
+          mark:'test_process_002',
+          operate:false
+        },{
+          name:'测试流程003',
+          des:'就是一个简单的测试流程',
+          mark:'test_process_003',
+          operate:false
+        },{
+          name:'测试流程004',
+          des:'就是一个简单的测试流程',
+          mark:'test_process_004',
+          operate:false
+        },{
+          name:'测试流程005',
+          des:'就是一个简单的测试流程',
+          mark:'test_process_005',
+          operate:false
+        },{
+          name:'测试流程006',
+          des:'就是一个简单的测试流程',
+          mark:'test_process_006',
+          operate:false
+        },
+      ],
     }
   },
   methods: {
-  },
-  components:{
+    create() {
 
-  }
+    },
+    rowClick(row) {
+      // 使用on-current-change事件由于更改了表格数据 产生了重绘导致前一个数据总是返回null
+      if(this.prveIndex !== null) {
+        this.tableData[this.prveIndex].operate = false
+      }
+      const currentRowIndex = this.tableData.findIndex( data => data.mark == row.mark)
+      this.tableData[currentRowIndex].operate = !row.operate
+      this.prveIndex = currentRowIndex
+    },
+    deletePrecess(index,event) {
+      event.stopPropagation()
+      console.log('delPrecess',index)
+    },
+    editPrecess(index,event) {
+      event.stopPropagation()
+      console.log('editPrecess',index)
+    }
+  },
+  components:{}
 }
 </script>
 
 <style lang='less' scoped>
   @import "../../../common/less/color.less";
-  
 </style>
 

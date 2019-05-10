@@ -48,10 +48,12 @@ export default {
 
     this.window.on('maximize',() => {
       this.isMaximize = true
+      console.log('maximize',this.isMaximize,this.window)
     })
 
     this.window.on('unmaximize',() => {
       this.isMaximize = false
+      console.log('unmaximize',this.isMaximize)
     })
   },
   methods: {
@@ -62,6 +64,7 @@ export default {
       this.window.minimize()
     },
     maximize() {
+      console.log('??',this.isMaximize)
       this.isMaximize ? this.window.unmaximize() : this.window.maximize()
     },
     close() {
@@ -81,14 +84,15 @@ export default {
   .mainWindow {
     width: 100%;
     height: 100%;
-    box-sizing: border-box;
     background-color: white;
+    -webkit-app-region: no-drag;
     border:1px solid @sign-header-background;
     header {
       width: 100%;
       height: 35px;
       line-height: 35px;
       color: white;
+      -webkit-app-region: drag;
       background-color: @sign-header-background;
       span {
         font-size: 14px;
@@ -137,25 +141,27 @@ export default {
       }
     }
     .main {
-      -webkit-app-region: no-drag;
       width: 100%;
       height: calc(~'100% - 35px');
       position: relative;
       display: flex;
       .pages {
         flex: 1;
-        margin: 0 20px;
-        overflow: hidden;
+        height: 100%;
+        overflow:hidden;
         h3 {
           font-size: 15px;
           height: 40px;
           line-height: 40px;
+          margin: 0 20px 20px 20px;
           border-bottom: 1px solid #dddde1;
         }
         &>div {
-          margin: 20px 0;
+          padding: 0 20px 0 20px;
+          height: calc(~'100% - 40px - 50px');
           font-size: 14px;
           position: relative;
+          overflow: auto;
         }
       }
     }

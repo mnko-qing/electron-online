@@ -20,10 +20,6 @@
             type: 'expand',
             width: 30,
             render: (h, params) => {
-              if(params.row.sub && params.row.sub.length) {
-                this.columns.type = ''
-                this.columns.width = 0
-              }
               return h(expandRow, {
                 props: {
                   row: params.row.sub
@@ -79,14 +75,14 @@
   }
 </script>
 
-<style>
-  .expand-row {
-    margin-bottom: 16px;
-  }
+<style lang="less">
   td.ivu-table-expanded-cell {	
     padding:0 !important;	
   }
   .expand-table .ivu-icon-ios-arrow-forward:before {
     display: none;
+  }
+  .expand-table.ivu-table-wrapper {
+    margin: 0 !important;	
   }
 </style>

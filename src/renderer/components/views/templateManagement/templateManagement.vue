@@ -9,17 +9,13 @@
         @click="create">
         创建模板
       </Button>
-
-      <header @dblclick="doubleClick">doubleClick</header>
       
-      <div class="tableArea">
-        <Table 
-          stripe 
-          size="small" 
-          :columns="columns" 
-          :data="tableData">
-        </Table>
-      </div>
+      <Table 
+        stripe 
+        size="small" 
+        :columns="columns" 
+        :data="tableData">
+      </Table>
 
       <Spin size="large" fix v-if="loading"></Spin>
     </div>
@@ -54,9 +50,6 @@ export default {
       this.parentShow = false
       this.$router.push({name:'createTemplate'})
     },
-    doubleClick() {
-      console.log('????')
-    }
   },
   components:{
 
@@ -71,14 +64,6 @@ export default {
     &>div:first-child {
       width: 100%;
       height: 100%;
-      .create {
-        float: right;
-      }
-      .tableArea {
-        margin-top: 20px;
-        height: calc(~'100% - 50px');
-        overflow: auto;
-      }
     }
   }
 </style>

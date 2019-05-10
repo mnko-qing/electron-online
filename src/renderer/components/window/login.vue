@@ -1,7 +1,7 @@
 <template>
   <div class="sign-in">
     <header>
-      <Icon type="ios-close" size="36" @click="close" />
+      <Icon type="ios-close" size="36" @click="close()" />
       <span>在线协作</span>
     </header>
     <div class="sign-wrapper">
@@ -92,6 +92,7 @@ export default {
             this.username = cookie.username
             this.password = cookie.password
             this.remember = cookie.remember
+            this.autoSign = cookie.autoSign
           }
         }
       })

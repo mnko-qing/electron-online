@@ -6,6 +6,7 @@
 
 <style>
   @import "./common/less/reset.less";
+  @import "./common/less/common.less";
   @import "./common/less/ivew-custom.less";
   body{
     background-color: transparent !important; 
@@ -16,6 +17,11 @@
     -webkit-app-region: drag;
   }
   ::-webkit-scrollbar {
-    width: 3px;
+    width: 7px;
+    border-radius: 50%;
+    background-color: #f3f3f5;
+  }
+  ::-webkit-scrollbar-track-piece {
+    background-color: transparent;
   }
 </style>

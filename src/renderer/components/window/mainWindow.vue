@@ -1,5 +1,5 @@
 <template>
-  <div class="mainWindow">
+  <div class="mainWindow" @click="hideRightSidebar">
     <header>
       <span>在线协作</span>
       <nav>
@@ -17,7 +17,7 @@
       </nav>
     </header>
     <div class="main">
-      <SideBarMenu @switchPage="switchPage"></SideBarMenu>
+      <SidebarMenu @switchPage="switchPage"></SidebarMenu>
       <div class="pages">
         <h3>{{pageName}}</h3>
         <router-view />
@@ -28,7 +28,8 @@
 
 <script>
 import { remote } from 'electron'
-import SideBarMenu from '../sideBarMenu/sideBarMenu'
+import { mapState, mapMutations } from 'vuex'
+import SidebarMenu from '../sideBarMenu/sidebarMenu'
 export default {
   name: 'mainWindow',
   data (){
@@ -37,6 +38,11 @@ export default {
       isMaximize:false,
       pageName:'',
     }
+  },
+  computed: {
+    ...mapState({
+      show:state => state.rightSidebar.show
+    })
   },
   created() {
     this.window = remote.getCurrentWindow()
@@ -48,12 +54,10 @@ export default {
 
     this.window.on('maximize',() => {
       this.isMaximize = true
-      console.log('maximize',this.isMaximize,this.window)
     })
 
     this.window.on('unmaximize',() => {
       this.isMaximize = false
-      console.log('unmaximize',this.isMaximize)
     })
   },
   methods: {
@@ -64,8 +68,8 @@ export default {
       this.window.minimize()
     },
     maximize() {
-      console.log('??',this.isMaximize)
       this.isMaximize ? this.window.unmaximize() : this.window.maximize()
+      this.isMaximize = !this.isMaximize
     },
     close() {
       this.window.destroy()
@@ -74,8 +78,12 @@ export default {
       this.pageName = name.label
       this.$router.push({name:name.name})
     },
+
+    hideRightSidebar() {
+      this.show && this.$store.commit('SWITCH_RIGHT_BAR_SHOW',false)
+    }
   },
-  components:{SideBarMenu}
+  components:{ SidebarMenu }
 }
 </script>
 
@@ -84,6 +92,7 @@ export default {
   .mainWindow {
     width: 100%;
     height: 100%;
+    overflow: hidden;
     background-color: white;
     -webkit-app-region: no-drag;
     border:1px solid @sign-header-background;

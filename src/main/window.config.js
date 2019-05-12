@@ -1,4 +1,4 @@
-// import { Tray, Menu, ipcMain } from 'electron'
+import { getSessionCookie } from './session.cookie'
 
 export const loginWindowConfig = {
   width: 450,
@@ -18,9 +18,30 @@ export const mainWindowConfig = {
   resizable:true,
   maximizable:true,
   minimizable: true,
-  // transparent: true, 开启后无法调用maximize() 
+  transparent: true, 
+  // 开启后无法调用maximize() 
   // 不会触发原生监听的window.on('maximize') 处处是坑
 }
 
+export function getSession() {
+  return new Promise((resolve, reject) => {
+    let isAutoSign = false
+    getSessionCookie().then( cookies => {
+      if (cookies.length) {
+        getSessionCookie({name:'userInfo'}).then(cookie => {
+          const userInfo = JSON.parse(cookie[0].value)
+          console.log('userInfo', userInfo)
+          if (userInfo.autoSign) {
+            isAutoSign = true
+          }
+          resolve(isAutoSign)
+        })
+      }
+    }).catch(error => {
+      console.log(error)
+      reject(error)
+    })
+  })
+}
 
 

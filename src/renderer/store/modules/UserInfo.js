@@ -3,7 +3,7 @@ const state = {
 }
 
 const getters = {
-  userInfo: state => state.userInfo
+  // userInfo: state => state.userInfo
 }
 
 const mutations = {
@@ -13,9 +13,9 @@ const mutations = {
 }
 
 const actions = {
-  updateUser({ commit },user) {
+  /* updateUser({ commit },user) {
     commit('UPDATE_USERINFO',user)
-  }
+  } */
 }
 
 export default {

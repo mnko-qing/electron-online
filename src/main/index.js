@@ -1,7 +1,10 @@
-
 import { path } from 'path'
-import { loginWindowConfig, mainWindowConfig } from './window.config'
-import { app, Tray, Menu, ipcMain, session, BrowserWindow } from 'electron'
+import { app, Tray, Menu, ipcMain, BrowserWindow } from 'electron'
+import { 
+  getSession,
+  loginWindowConfig, 
+  mainWindowConfig 
+} from './window.config'
 
 /**
  * Set `__static` path to static files in production
@@ -23,7 +26,12 @@ function createWindow () {
    * Initial window options
    */
   getSession().then( res => {
-    const window = res ? mainWindowConfig : loginWindowConfig
+    let window = loginWindowConfig
+
+    if (res) {
+      window = mainWindowConfig
+      winURL += '/#/window'
+    }
     mainWindow = new BrowserWindow(window)
     mainWindow.webContents.closeDevTools()
     mainWindow.loadURL(winURL)
@@ -32,24 +40,6 @@ function createWindow () {
     !res && createTray()
   }).catch( error => {
     console.log(error)
-  })
-}
-
-function getSession() {
-  return new Promise((resolve, reject) => {
-    let isAutoSign = false
-    session.defaultSession.cookies.get({}, (error, cookies) => {
-      console.log(error, cookies)
-      if( error ) reject(error) 
-      if (cookies.length) {
-        const cookie = JSON.parse(cookies[0].value)
-        if (cookie.autoSign) {
-          winURL += '/#/window'
-          isAutoSign = true
-        }
-      } 
-      resolve(isAutoSign)
-    })
   })
 }
 

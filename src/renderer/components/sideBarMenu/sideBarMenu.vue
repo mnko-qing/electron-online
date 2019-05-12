@@ -9,7 +9,8 @@
       accordion 
       v-if="isOpenMenu"
       :active-name="menu[0].name" 
-      @on-select="selectMenu">
+      @on-select="selectMenu"
+      @on-open-change="openSubMenu">
       
       <template v-for="item in menu">
 
@@ -66,27 +67,48 @@
         @click="selectMenu(i)"/>
 
       <Icon type="ios-skip-forward" @click="isOpenMenu = true"/>
-      <Icon type="ios-contact"/>
-      <Icon type="ios-settings-outline" />
+      <Icon type="ios-contact" @click.stop="showRightSidebar('user')"/>
+      <Icon type="ios-settings-outline" 
+        @click.stop="showRightSidebar('settings')"/>
     </div>
 
     <div class="user-setting" v-if="isOpenMenu">
-      <Icon type="ios-contact" size="50" />
+      <Icon 
+        size="50" 
+        type="ios-contact" 
+        @click.stop="showRightSidebar('user')"/>
       <span>用户名</span>
-      <Icon type="ios-settings-outline" size="24" />
+      <Icon 
+        size="24" 
+        type="ios-settings-outline" 
+        @click.stop="showRightSidebar('settings')"/>
     </div>
+
+    <transition>
+      <RightSidebar v-show="show">
+        <User v-if="renderRightSidebar == 'user'"></User>
+        <Settings v-else></Settings>
+      </RightSidebar>
+    </transition>
   </div>
 </template>
 
 <script>
 import menuConfig from './menuConfig'
+import { mapState, mapMutations } from 'vuex'
 export default {
   name: 'sideBarMenu',
   data (){
     return {
       isOpenMenu:true, 
+      renderRightSidebar:'',
       menu:[]
     }
+  },
+  computed: {
+    ...mapState({
+      show:state => state.rightSidebar.show
+    })
   },
   created() {
     this.menu = menuConfig
@@ -96,6 +118,7 @@ export default {
   },
   methods: {
     selectMenu(name) {
+      this.switchRightSidebar(false)
       let menuItem = name
       if(typeof name == 'string') {
         for(let menu of this.menu) {
@@ -125,8 +148,24 @@ export default {
           }
         }
       }
-    }
+    },
+    openSubMenu(name) {
+      this.switchRightSidebar(false)
+    },
+
+    switchRightSidebar(flag) {
+      this.$store.commit('SWITCH_RIGHT_BAR_SHOW',flag)
+    },
+    showRightSidebar(render) {
+      this.switchRightSidebar(true)
+      this.renderRightSidebar = render
+    },
   },
+  components:{ 
+    User:( () => import('./user')),
+    Settings:( () => import('./settings')),
+    RightSidebar:( () => import('../public/rightSidebar')),
+  }
 }
 </script>
 

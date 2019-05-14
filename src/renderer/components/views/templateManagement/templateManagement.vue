@@ -1,14 +1,12 @@
 <template>
   <div class="templateManagement">
     <div v-if="parentShow">
-      <Input search v-model="templateName" placeholder="搜索模板名称"/>
-
-      <Button 
-        type="primary" 
-        class="create" 
-        @click="create">
-        创建模板
-      </Button>
+      <PageHead 
+        name="模板" 
+        :searchValue="templateName"
+        @create="create"
+        @search="getList">
+      </PageHead>
       
       <Table 
         stripe 
@@ -50,9 +48,12 @@ export default {
       this.parentShow = false
       this.$router.push({name:'createTemplate'})
     },
+    getList(value) {
+      console.log('search',value)
+    },
   },
   components:{
-
+    PageHead:(() => import('@/components/public/pageHead'))
   }
 }
 </script>

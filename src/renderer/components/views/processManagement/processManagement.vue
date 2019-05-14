@@ -1,13 +1,11 @@
 <template>
   <div class="processManagement">
-    <Input search v-model="processName" placeholder="搜索流程名称"/>
-
-    <Button 
-      type="primary" 
-      class="create" 
-      @click="create">
-      创建流程
-    </Button>
+    <PageHead 
+      name="流程" 
+      :searchValue="processName"
+      @create="create"
+      @search="getList">
+    </PageHead>
     
     <Table 
       stripe 
@@ -104,6 +102,9 @@ export default {
     create() {
 
     },
+    getList(value) {
+      console.log('search',value)
+    },
     rowClick(row) {
       // 使用on-current-change事件由于更改了表格数据 产生了重绘导致前一个数据总是返回null
       if(this.prveIndex !== null) {
@@ -122,7 +123,9 @@ export default {
       console.log('editPrecess',index)
     }
   },
-  components:{}
+  components:{
+    PageHead:(() => import('@/components/public/pageHead'))
+  }
 }
 </script>
 

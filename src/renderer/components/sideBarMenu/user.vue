@@ -86,10 +86,6 @@ export default {
     .pl-10 {
       padding-left: 10px;
     }
-    .no-text-select {
-      -webkit-user-select: none;
-      cursor:default;
-    }
   }
 </style>
 

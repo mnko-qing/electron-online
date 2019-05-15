@@ -36,6 +36,8 @@ export function getSession() {
           }
           resolve(isAutoSign)
         })
+      } else {
+        resolve(isAutoSign)
       }
     }).catch(error => {
       console.log(error)

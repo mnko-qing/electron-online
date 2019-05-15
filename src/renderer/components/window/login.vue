@@ -68,10 +68,6 @@ export default {
         name:'规划发起人',
       }
 
-      /* remote.session.defaultSession.cookies.remove(window.location.href,'userInfo', error => {
-        if (error) console.error(error)
-      }) */
-
       remote.session.defaultSession.cookies.set({
         url:window.location.href,
         name:'userInfo',
@@ -87,7 +83,6 @@ export default {
         console.log(error, cookies)
         if (cookies.length) {
           const cookie = JSON.parse(cookies[0].value)
-          console.log('cookie123',cookie)
           if (cookie.remember) {
             this.username = cookie.username
             this.password = cookie.password

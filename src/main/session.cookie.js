@@ -13,7 +13,7 @@ export function setSessionCookie(options) {
 
 export function getSessionCookie(options) {
   return new Promise((resolve, reject) => {
-    session.defaultSession.cookies.get(options || {}, (error, cookies) => {
+    session.defaultSession.cookies.get(Object.assign({},options), (error, cookies) => {
       if(error) reject(error)
       resolve(cookies)
     })

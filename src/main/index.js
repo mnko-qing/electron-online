@@ -25,9 +25,10 @@ function createWindow () {
   /**
    * Initial window options
    */
-  getSession().then( res => {
-    let window = loginWindowConfig
 
+  getSession().then(res => {
+    let window = loginWindowConfig
+    console.log('cookies',res)
     if (res) {
       window = mainWindowConfig
       winURL += '/#/window'

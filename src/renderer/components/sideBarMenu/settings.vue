@@ -4,7 +4,7 @@
     <div class="main">
       <article>
         <label>文件导出路径设置</label>
-        <div class="export-route">C:\Users\30103\Desktop</div>
+        <div class="export-route no-text-select">C:\Users\30103\Desktop</div>
       </article>
       <Divider />
       <article>

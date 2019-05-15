@@ -1,14 +1,19 @@
 <template>
   <div class="dictionaryManagement">
-    <Input search v-model="dicType" placeholder="搜索字典类型"/>
-    <Input search v-model="dicName" placeholder="搜索字典名称"/>
+    <PageHead 
+      name="字典" 
+      :searchValue="dicName"
+      @create="create"
+      @search="getList">
 
-    <Button 
-      type="primary" 
-      class="create" 
-      @click="create">
-      创建字典
-    </Button>
+      <Input 
+        search 
+        slot="search"
+        class="ml-15"
+        v-model="dicType" 
+        @on-search="getList"
+        placeholder="搜索字典类型"/>
+    </PageHead>
     
     <Table 
       stripe 
@@ -31,9 +36,15 @@ export default {
     }
   },
   methods: {
+    create() {
+      console.log('create dictionary')
+    },
+    getList(value) {
+      console.log('search',value)
+    },
   },
   components:{
-
+    PageHead:(() => import('@/components/public/pageHead'))
   }
 }
 </script>

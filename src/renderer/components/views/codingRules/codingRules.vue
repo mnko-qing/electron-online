@@ -1,13 +1,11 @@
 <template>
   <div class="codingRules">
-    <Input search v-model="code" placeholder="搜索编码"/>
-
-    <Button 
-      type="primary" 
-      class="create" 
-      @click="create">
-      创建编码
-    </Button>
+    <PageHead 
+      name="编码" 
+      :searchValue="code"
+      @create="create"
+      @search="getList">
+    </PageHead>
     
     <Table 
       stripe 
@@ -145,11 +143,14 @@ export default {
   },
   methods: {
     create() {
-      
+      console.log('create')
+    },
+    getList(value) {
+      console.log('search',value)
     },
   },
   components:{
-
+    PageHead:(() => import('@/components/public/pageHead'))
   }
 }
 </script>

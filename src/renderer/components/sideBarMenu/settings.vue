@@ -4,7 +4,15 @@
     <div class="main">
       <article>
         <label>文件导出路径设置</label>
-        <div class="export-route no-text-select">C:\Users\30103\Desktop</div>
+        <div 
+          @click="selectExportPath"
+          :class="[
+          'export-path',
+          'no-text-select',
+          'overflow-ellipsis',
+          {'click-scale':addScale}]">
+          {{exportPath}}
+        </div>
       </article>
       <Divider />
       <article>
@@ -21,17 +29,36 @@
 </template>
 
 <script>
-
+import { remote } from 'electron'
 export default {
   name:'settings',
   data() {
     return {
       fontSize:14,
+      addScale:false,
+      exportPath:'C:\\Users\\30103\\Desktop'
     }
   },
   mounted() {
     
   },
+  methods:{
+    selectExportPath() {
+      this.addScale = true
+      remote.dialog.showOpenDialog({
+        title:'选择文件夹',
+        buttonLabel:'选择文件夹',
+        defaultPath:this.exportPath,
+        properties: ['openDirectory','createDirectory']
+      }, filePaths => {
+        // 取消时 filepaths 是 undefined
+        if(filePaths) {
+          this.exportPath = filePaths[0]
+        }
+        this.addScale = false
+      })
+    }
+  }
 }
 </script>
 
@@ -52,7 +79,7 @@ export default {
       .ivu-divider-horizontal {
         margin: 0;
       }
-      .export-route {
+      .export-path {
         height: 30px;
         line-height: 30px;
         border:1px solid #e8eaec;

@@ -20,7 +20,7 @@
       <SidebarMenu @switchPage="switchPage"></SidebarMenu>
       <div class="pages">
         <h3>{{pageName}}</h3>
-        <router-view />
+          <router-view />
       </div>
     </div>
   </div>
@@ -81,7 +81,7 @@ export default {
 
     hideRightSidebar() {
       this.show && this.$store.commit('SWITCH_RIGHT_BAR_SHOW',false)
-    }
+    },
   },
   components:{ SidebarMenu }
 }

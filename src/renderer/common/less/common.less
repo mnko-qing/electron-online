@@ -2,8 +2,30 @@
 .create {
   float: right;
 }
-
 .no-text-select {
   -webkit-user-select: none;
   cursor:default;
+}
+
+.ml-15 {
+  margin-left: 15px;
+}
+
+.overflow-ellipsis {
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis; 
+}
+
+.click-scale {
+  transition: all 0.1s ease;
+  animation: clickScale 0.5s;
+}
+
+/* 点击放大 在变回原来的大小 */
+@keyframes clickScale {
+  0%   {transform: scale(1);}
+  25%  {transform: scale(0.98);}
+  50%  {transform: scale(0.96);}
+  100% {transform: scale(1);}
 }

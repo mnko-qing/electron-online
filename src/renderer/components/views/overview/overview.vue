@@ -1,5 +1,5 @@
 <template>
-  <div class="overview">
+  <div class="overview" @scroll="scroll">
     <HighCharts 
       ref="orderStatistics" 
       :options="orderStatisticsOptions">
@@ -185,11 +185,13 @@ export default {
           create_time1:442,
           time:'xxxx-xx-xx',
         },
-      ]
+      ],
+      preloadingThreshold:40 * 3, //3个单元格高度
+      scrollTop:0, //记录每一次滚动的scrollTop 判断下一次滚动方向
     }
   },
   created() {
-
+    
   },
   mounted() {
 
@@ -197,6 +199,18 @@ export default {
   methods: {
     init() {
       
+    },
+    scroll(event) {
+      const target = event.target
+      const offsetHeight = Math.max(target.scrollHeight,target.offsetHeight)
+      const preLoad = target.scrollTop + target.clientHeight + this.preloadingThreshold
+      if(target.scrollTop - this.scrollTop > 0) {
+        if(preLoad >= offsetHeight) {
+          console.log('可以加载了')
+          
+        }
+      }
+      this.scrollTop = target.scrollTop
     },
   },
   components:{

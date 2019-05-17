@@ -7,7 +7,7 @@
 
     <Menu 
       accordion 
-      v-if="isOpenMenu"
+      v-show="isOpenMenu"
       :active-name="menu[0].name" 
       @on-select="selectMenu"
       @on-open-change="openSubMenu">
@@ -58,7 +58,7 @@
 
     </Menu>
 
-    <div v-else class="retractMenu">
+    <div v-show="!isOpenMenu" class="retractMenu">
       <Icon 
         v-for="i in menu" 
         :key="i.icon" 

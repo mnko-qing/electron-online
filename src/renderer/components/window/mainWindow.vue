@@ -19,8 +19,15 @@
     <div class="main">
       <SidebarMenu @switchPage="switchPage"></SidebarMenu>
       <div class="pages">
-        <h3>{{pageName}}</h3>
-          <router-view />
+        <div class="page-title">
+          <Icon 
+            size="32" 
+            v-if="isShowBack"
+            @click="back"
+            type="ios-arrow-round-back" />
+          <span>{{pageName}}</span>
+        </div>
+        <router-view />
       </div>
     </div>
   </div>
@@ -37,6 +44,7 @@ export default {
       window:null,
       isMaximize:false,
       pageName:'',
+      isShowBack:false,
     }
   },
   computed: {
@@ -60,6 +68,13 @@ export default {
       this.isMaximize = false
     })
   },
+  watch:{
+    '$route' (to, from) {
+      const toDepth = to.path.split('/').length
+      const fromDepth = from.path.split('/').length
+      this.isShowBack = toDepth > fromDepth ? true : false
+    }
+  },
   methods: {
     switchSkin() {
       // 后期整理在开发
@@ -81,6 +96,9 @@ export default {
 
     hideRightSidebar() {
       this.show && this.$store.commit('SWITCH_RIGHT_BAR_SHOW',false)
+    },
+    back() {
+      history.go(-1)
     },
   },
   components:{ SidebarMenu }
@@ -158,14 +176,20 @@ export default {
         flex: 1;
         height: 100%;
         overflow:hidden;
-        h3 {
+        .page-title {
           font-size: 15px;
           height: 40px;
           line-height: 40px;
           margin: 0 20px 20px 20px;
           border-bottom: 1px solid #dddde1;
+          i {
+            padding-right: 5px;
+            &:hover {
+              color: #5cadff;
+            }
+          }
         }
-        &>div {
+        &>div:last-child {
           padding: 0 20px 0 20px;
           height: calc(~'100% - 40px - 50px');
           font-size: 14px;

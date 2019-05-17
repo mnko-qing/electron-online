@@ -41,7 +41,14 @@ export default {
     this.tableData = tableData.data.datalist
     setTimeout(() => {
       this.loading = false
-    }, 500);
+    }, 200)
+  },
+  watch:{
+    '$route' (to, from) {
+      const toDepth = to.path.split('/').length
+      const fromDepth = from.path.split('/').length
+      this.parentShow = toDepth < fromDepth ? true : false
+    }
   },
   methods: {
     create() {

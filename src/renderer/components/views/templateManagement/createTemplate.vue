@@ -5,13 +5,14 @@
     <div class="">
       <label>模板分类：</label>
       <Select filterable v-model="templateConfig.classify">
-        <Option 
+        <!-- <Option 
           v-for="item in cityList" 
           :value="item.value" 
           :key="item.value">
           {{ item.label }}
-        </Option>
+        </Option> -->
       </Select>
+
     </div>
 
     <Spin size="large" fix v-if="loading"></Spin>
@@ -54,7 +55,7 @@ export default {
         }
         
       ],
-      /* templateConfig: {
+      templateConfig: {
         classify: "",
         relCodeRule: "",
         isShowGis:false,
@@ -62,7 +63,7 @@ export default {
         sysTemp: "",
         name: "",
         code: ""
-      }, */
+      },
     }
   },
   created () {

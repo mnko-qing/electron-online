@@ -5,8 +5,9 @@ export const loginWindowConfig = {
   height: 375,
   frame: false,
   resizable: false, 
-  maximizable:false,
-  transparent: true,
+  maximizable: false,
+  minimizable: false,
+  transparent: true,  //必须要透明才能开发多边形窗口
 }
 
 export const mainWindowConfig = {
